@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:sensor_pf/app/modules/home/models/sensor.dart';
+import 'package:sensor_pf/app/modules/core/models/sensor.dart';
 
 abstract class ISensorRepository {
   Stream<dynamic> getStream();
 
-  Future delete({@required Sensor sensor});
+  Future<bool> delete({@required Sensor sensor});
 
-  Future save({@required Sensor sensor});
+  Future<bool> addSensor({@required Sensor sensor});
 
-  Future update({@required Sensor sensor});
+  Future<bool> update({@required Sensor sensor});
 }

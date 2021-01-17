@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:sensor_pf/app/modules/core/models/sensor.dart';
 import 'package:sensor_pf/app/modules/home/home_controller.dart';
-
-import 'models/sensor.dart';
+import 'package:sensor_pf/app/modules/home/widgets/add_sensor/add_sensor_page.dart';
 
 // ignore: must_be_immutable
 class HomePage extends StatelessWidget {
@@ -56,7 +56,11 @@ class HomePage extends StatelessWidget {
                             width: constraints.maxWidth / 2,
                             child: GestureDetector(
                               onTap: () {
-                                print("add sensor");
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => AddSensorPage(),
+                                    ));
                               },
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,

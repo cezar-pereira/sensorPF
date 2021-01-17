@@ -22,7 +22,7 @@ class Sensor {
     this.id,
     this.name,
     this.createdAt,
-    this.checkTemperature,
+    this.checkTemperature = false,
     this.settings,
     this.temperatures,
   });
@@ -55,6 +55,6 @@ class Sensor {
         "createdAt": createdAt,
         "CheckTemperature": checkTemperature,
         "Settings": settings.toJson(),
-        "Temperatures": temperatures.toJson(),
+        "Temperatures": temperatures.toJson()
       };
 }

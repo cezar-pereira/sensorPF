@@ -1,17 +1,15 @@
-import 'package:flutter/material.dart';
-
 class Temperatures {
-  Temperatures({
-    @required this.average,
-    @required this.maximum,
-    @required this.minimum,
-    @required this.real,
-  });
-
   double average;
   double maximum;
   double minimum;
   double real;
+
+  Temperatures({
+    this.average = 0,
+    this.maximum = 0,
+    this.minimum = 0,
+    this.real = 0,
+  });
 
   factory Temperatures.fromJson(Map<dynamic, dynamic> json) => Temperatures(
         average: json["average"].toDouble(),

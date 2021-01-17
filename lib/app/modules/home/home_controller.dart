@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:sensor_pf/app/modules/core/models/sensor.dart';
 import 'package:sensor_pf/app/modules/core/repositories/sensor_repository.dart';
-
-import 'models/sensor.dart';
 
 class HomeController {
   SensorRepository _sensorRepository = SensorRepository();
@@ -27,11 +26,6 @@ class HomeController {
   double calculatePercentToAlert() {
     return this._sensorSelected.value.temperatures.real /
         this._sensorSelected.value.settings.temperatureAlert;
-  }
-
-  Future<bool> addSensor(Sensor sensor) async {
-    this._sensorRepository.save(sensor: sensor);
-    return true;
   }
 
   List<Sensor> get listSensors => this._sensors;

@@ -9,13 +9,12 @@ class Settings {
 
   String email;
   int intervalToUpdate;
-  int temperatureAlert;
-  String password;
+  double temperatureAlert;
 
   Settings copyWith({
     String email,
     int intervalToUpdate,
-    int temperatureAlert,
+    var temperatureAlert,
   }) =>
       Settings(
         email: email ?? this.email,
@@ -26,13 +25,12 @@ class Settings {
   factory Settings.fromJson(Map<dynamic, dynamic> json) => Settings(
         email: json["Email"],
         intervalToUpdate: json["IntervalToUpdate"],
-        temperatureAlert: json["TemperatureAlert"],
+        temperatureAlert: json["TemperatureAlert"].toDouble(),
       );
 
   Map<String, dynamic> toJson() => {
         "Email": email,
         "IntervalToUpdate": intervalToUpdate,
         "TemperatureAlert": temperatureAlert,
-        "Password": password,
       };
 }
