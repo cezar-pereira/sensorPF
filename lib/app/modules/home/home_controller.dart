@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:sensor_pf/app/modules/core/functions/checkConnectionNetwork.dart';
 import 'package:sensor_pf/app/modules/core/models/sensor.dart';
 import 'package:sensor_pf/app/modules/core/repositories/sensor_repository.dart';
 
@@ -33,7 +34,7 @@ class HomeController {
   }
 
   Future<bool> removeSensor() async {
-    if (await checkConnection())
+    if (await CheckConnectionNetwork().checkConnection())
       return this._sensorRepository.remove(sensor: this._sensorSelected.value);
     else
       return false;
@@ -46,16 +47,4 @@ class HomeController {
   }
 
   get sensorSelected => this._sensorSelected;
-
-  Future<bool> checkConnection() async {
-    try {
-      final result = await InternetAddress.lookup('google.com');
-      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty)
-        return true;
-      else
-        return false;
-    } on SocketException catch (_) {
-      return false;
-    }
-  }
 }

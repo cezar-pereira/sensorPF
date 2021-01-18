@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sensor_pf/app/modules/core/functions/checkConnectionNetwork.dart';
 import 'package:sensor_pf/app/modules/core/models/sensor.dart';
 import 'package:sensor_pf/app/modules/core/models/settings.dart';
 import 'package:sensor_pf/app/modules/core/models/temperature.dart';
@@ -12,18 +13,21 @@ class AddSensorController {
   TextEditingController intervalToUpdateController = TextEditingController();
 
   Future<bool> addSensor() async {
-    Settings settings = Settings(
-        email: emailController.text,
-        intervalToUpdate: int.parse(intervalToUpdateController.text),
-        temperatureAlert: double.parse(temperatureAlertController.text));
+    if (await CheckConnectionNetwork().checkConnection()) {
+      Settings settings = Settings(
+          email: emailController.text,
+          intervalToUpdate: int.parse(intervalToUpdateController.text),
+          temperatureAlert: double.parse(temperatureAlertController.text));
 
-    Sensor sensor = Sensor(
-      name: nameController.text,
-      createdAt: DateTime.now().toString(),
-      settings: settings,
-      temperatures: Temperatures(),
-    );
+      Sensor sensor = Sensor(
+        name: nameController.text,
+        createdAt: DateTime.now().toString(),
+        settings: settings,
+        temperatures: Temperatures(),
+      );
 
-    return await this._sensorRepository.addSensor(sensor: sensor);
+      return await this._sensorRepository.addSensor(sensor: sensor);
+    } else
+      return false;
   }
 }
