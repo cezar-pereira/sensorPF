@@ -64,20 +64,20 @@ class AddSensorPage extends StatelessWidget with Widgets {
                           onTap: () async {
                             if (_formKey.currentState.validate()) {
                               if (await controller.addSensor()) {
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(snackBar(context, true));
-                                Navigator.pop(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (_) => HomePage()));
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    snackBarSuccess(
+                                        text: "Sensor adicionado.",
+                                        context: context));
                               } else {
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(snackBar(context, false));
-                                Navigator.pop(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (_) => HomePage()));
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    snackBarError(
+                                        text: "Sensor não adicionado.",
+                                        context: context));
                               }
+                              Navigator.pop(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (_) => HomePage()));
                             }
                           },
                           child: Text(
@@ -114,30 +114,6 @@ class AddSensorPage extends StatelessWidget with Widgets {
         ),
       ),
     );
-  }
-
-  snackBar(context, bool value) {
-    return SnackBar(
-        content: Row(
-      children: [
-        value
-            ? Icon(
-                Icons.done,
-                color: Theme.of(context).accentColor,
-                size: Theme.of(context).textTheme.headline1.fontSize,
-              )
-            : Icon(
-                Icons.close,
-                color: Colors.red,
-                size: Theme.of(context).textTheme.headline1.fontSize,
-              ),
-        SizedBox(width: 15),
-        Text(
-          value ? "Sensor Adicionado!" : "Sensor não adicionado!",
-          style: Theme.of(context).textTheme.headline6,
-        ),
-      ],
-    ));
   }
 
   validatorName(String value) {

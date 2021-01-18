@@ -1,15 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:sensor_pf/app/modules/core/models/sensor.dart';
+import 'package:sensor_pf/app/modules/core/ui/widgets.dart';
 import 'package:sensor_pf/app/modules/home/home_controller.dart';
 import 'package:sensor_pf/app/modules/home/widgets/add_sensor/add_sensor_page.dart';
 
 // ignore: must_be_immutable
-class HomePage extends StatelessWidget {
-  HomeController controller = HomeController();
+class HomePage extends StatefulWidget {
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> with Widgets {
+  HomeController controller;
   PageController pageController = PageController();
 
   @override
   Widget build(BuildContext context) {
+    controller = HomeController();
     return StreamBuilder(
       stream: controller.getStream(),
       builder: (_, snapshot) {
@@ -80,7 +87,77 @@ class HomePage extends StatelessWidget {
                             child: GestureDetector(
                               onTap: () {
                                 if (controller.listSensors.isNotEmpty) {
-                                  print("delete sensor");
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return AlertDialog(
+                                          actions: [
+                                            FlatButton(
+                                                onPressed: () {
+                                                  Navigator.of(context,
+                                                          rootNavigator: true)
+                                                      .pop(false);
+                                                },
+                                                child: Text("Cancelar")),
+                                            FlatButton(
+                                                onPressed: () async {
+                                                  if (await controller
+                                                      .removeSensor()) {
+                                                    ScaffoldMessenger.of(
+                                                            context)
+                                                        .showSnackBar(
+                                                            snackBarSuccess(
+                                                                text:
+                                                                    "Sensor removido.",
+                                                                context:
+                                                                    context));
+                                                    setState(() {});
+                                                  } else {
+                                                    ScaffoldMessenger.of(
+                                                            context)
+                                                        .showSnackBar(snackBarError(
+                                                            text:
+                                                                "Sensor não removido.",
+                                                            context: context));
+                                                  }
+
+                                                  Navigator.of(context,
+                                                          rootNavigator: true)
+                                                      .pop(true);
+                                                },
+                                                child: Text(
+                                                  "Remover",
+                                                  style: TextStyle(
+                                                      color: Colors.red),
+                                                ))
+                                          ],
+                                          title: Text(
+                                            "Remover sensor",
+                                            style:
+                                                TextStyle(color: Colors.black),
+                                          ),
+                                          content: RichText(
+                                              text: TextSpan(
+                                                  style: TextStyle(
+                                                      color: Colors.black),
+                                                  text:
+                                                      "Confirma remoção do sensor ",
+                                                  children: [
+                                                TextSpan(
+                                                    text:
+                                                        "${controller.sensorSelected.value.name}",
+                                                    style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontWeight:
+                                                            FontWeight.bold)),
+                                                TextSpan(
+                                                  text: "?",
+                                                  style: TextStyle(
+                                                      color: Colors.black),
+                                                )
+                                              ])),
+                                        );
+                                      });
                                 }
                               },
                               child: Row(

@@ -14,7 +14,6 @@ class SensorRepository extends ISensorRepository {
   @override
   Future<bool> addSensor({@required Sensor sensor}) async {
     return reference
-        .child("sensors")
         .push()
         .set(sensor.toJson())
         .then((_) => true)
@@ -23,13 +22,19 @@ class SensorRepository extends ISensorRepository {
 
   @override
   Future<bool> update({@required Sensor sensor}) async {
-    // TODO: implement update
     throw UnimplementedError();
   }
 
   @override
-  Future<bool> delete({@required Sensor sensor}) async {
-    // TODO: implement delete
-    throw UnimplementedError();
+  Future<bool> remove({@required Sensor sensor}) async {
+    try {
+      return reference
+          .child(sensor.id)
+          .remove()
+          .then((_) => true)
+          .timeout(Duration(seconds: 5), onTimeout: () => false);
+    } catch (e) {
+      return false;
+    }
   }
 }

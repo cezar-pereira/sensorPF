@@ -33,4 +33,40 @@ class Widgets {
       ],
     );
   }
+
+  snackBarError({@required String text, @required BuildContext context}) {
+    return SnackBar(
+        content: Row(
+      children: [
+        Icon(
+          Icons.close,
+          color: Colors.red,
+          size: Theme.of(context).textTheme.headline1.fontSize,
+        ),
+        SizedBox(width: 15),
+        Text(
+          text,
+          style: Theme.of(context).textTheme.headline6,
+        ),
+      ],
+    ));
+  }
+
+  snackBarSuccess({@required String text, @required BuildContext context}) {
+    return SnackBar(
+        content: Row(
+      children: [
+        Icon(
+          Icons.done,
+          color: Theme.of(context).accentColor,
+          size: Theme.of(context).textTheme.headline1.fontSize,
+        ),
+        SizedBox(width: 15),
+        Text(
+          text,
+          style: Theme.of(context).textTheme.headline6,
+        ),
+      ],
+    ));
+  }
 }
