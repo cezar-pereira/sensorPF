@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:sensor_pf/app/modules/core/models/sensor.dart';
-import 'package:sensor_pf/app/modules/core/ui/widgets.dart';
+import 'package:sensor_pf/app/core/models/sensor.dart';
+import 'package:sensor_pf/app/core/ui/widgets.dart';
 import 'package:sensor_pf/app/modules/home/home_controller.dart';
 import 'package:sensor_pf/app/modules/home/widgets/add_sensor/add_sensor_page.dart';
+import 'package:sensor_pf/app/modules/settings/settings_page.dart';
 
 // ignore: must_be_immutable
 class HomePage extends StatefulWidget {
@@ -40,6 +41,14 @@ class _HomePageState extends State<HomePage> with Widgets {
                       alignment: Alignment.centerRight,
                       child: GestureDetector(
                         child: Icon(Icons.settings),
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => SettingsPage(
+                                      sensor:
+                                          controller.sensorSelected.value)));
+                        },
                       ),
                     ),
                   )

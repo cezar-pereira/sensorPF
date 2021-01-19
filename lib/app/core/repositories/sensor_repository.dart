@@ -1,7 +1,8 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:sensor_pf/app/modules/core/models/sensor.dart';
-import 'package:sensor_pf/app/modules/core/repositories/sensor_repository_interface.dart';
+import 'package:sensor_pf/app/core/models/sensor.dart';
+
+import 'sensor_repository_interface.dart';
 
 class SensorRepository extends ISensorRepository {
   final DatabaseReference reference = FirebaseDatabase.instance.reference();
@@ -22,7 +23,15 @@ class SensorRepository extends ISensorRepository {
 
   @override
   Future<bool> update({@required Sensor sensor}) async {
-    throw UnimplementedError();
+    try {
+      return reference
+          .child(sensor.id)
+          .update(sensor.toJson())
+          .then((_) => true)
+          .timeout(Duration(seconds: 5), onTimeout: () => false);
+    } catch (e) {
+      return false;
+    }
   }
 
   @override

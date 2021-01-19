@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sensor_pf/app/modules/core/models/sensor.dart';
+import 'package:sensor_pf/app/core/models/sensor.dart';
 
 abstract class ISensorRepository {
   Stream<dynamic> getStream();

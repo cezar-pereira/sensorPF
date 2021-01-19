@@ -14,7 +14,7 @@ class Sensor {
   String id;
   String name;
   String createdAt;
-  bool checkTemperature;
+  bool checkTemperature = false;
   Settings settings;
   Temperatures temperatures;
 
@@ -22,22 +22,22 @@ class Sensor {
     this.id,
     this.name,
     this.createdAt,
-    this.checkTemperature = false,
+    this.checkTemperature,
     this.settings,
     this.temperatures,
   });
 
   Sensor copyWith({
     String name,
-    String createdAt,
-    bool checkTemperature,
     Settings settings,
-    Temperatures temperatures,
   }) =>
       Sensor(
-        name: name ?? this.name,
-        settings: settings ?? this.settings,
-      );
+          id: this.id,
+          name: name ?? this.name,
+          createdAt: this.createdAt,
+          checkTemperature: this.checkTemperature,
+          settings: settings ?? this.settings,
+          temperatures: this.temperatures);
 
   factory Sensor.fromJson(
           {@required Map<dynamic, dynamic> json, @required String key}) =>

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sensor_pf/app/modules/core/ui/widgets.dart';
+import 'package:sensor_pf/app/core/ui/widgets.dart';
 import 'package:sensor_pf/app/modules/home/home_page.dart';
 import 'package:sensor_pf/app/modules/home/widgets/add_sensor/add_sensor_controller.dart';
 
