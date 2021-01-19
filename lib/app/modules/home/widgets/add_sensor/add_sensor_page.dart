@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sensor_pf/app/core/ui/widgets.dart';
+import 'package:sensor_pf/app/core/validators/validators.dart';
 import 'package:sensor_pf/app/modules/home/home_page.dart';
 import 'package:sensor_pf/app/modules/home/widgets/add_sensor/add_sensor_controller.dart';
 
@@ -28,19 +29,19 @@ class AddSensorPage extends StatelessWidget with Widgets {
                       context: context,
                       controller: controller.nameController,
                       text: 'Nome',
-                      validation: validatorName),
+                      validation: Validators().validatorName),
                   SizedBox(height: 30),
                   textField(
                       context: context,
                       controller: controller.emailController,
                       text: 'E-mail',
-                      validation: validatorEmail),
+                      validation: Validators().validatorEmail),
                   SizedBox(height: 30),
                   textField(
                       context: context,
                       controller: controller.temperatureAlertController,
                       text: 'Temperatura para alerta',
-                      validation: validatorTemperatureAlert,
+                      validation: Validators().validatorTemperatureAlert,
                       keyBoardType:
                           TextInputType.numberWithOptions(decimal: true)),
                   SizedBox(height: 30),
@@ -48,7 +49,8 @@ class AddSensorPage extends StatelessWidget with Widgets {
                       context: context,
                       controller: controller.intervalToUpdateController,
                       text: 'Intervalo para atualizar temperatura (em minutos)',
-                      validation: validatorIntervalToAutoUpdateTemperature,
+                      validation:
+                          Validators().validatorIntervalToAutoUpdateTemperature,
                       keyBoardType:
                           TextInputType.numberWithOptions(decimal: false)),
                   SizedBox(height: 50),
@@ -114,51 +116,5 @@ class AddSensorPage extends StatelessWidget with Widgets {
         ),
       ),
     );
-  }
-
-  validatorName(String value) {
-    int minCaracters = 5;
-    int maxCaracters = 80;
-
-    if (value.length < minCaracters || value.length > maxCaracters)
-      return "Nome deve conter entre $minCaracters e $maxCaracters caracteres.";
-    else
-      return null;
-  }
-
-  validatorEmail(String value) {
-    Pattern pattern =
-        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-    RegExp regex = RegExp(pattern);
-
-    if (regex.hasMatch(value))
-      return null;
-    else
-      return "Digite um email válido.";
-  }
-
-  validatorTemperatureAlert(String value) {
-    Pattern pattern = r"^[+-]?[0-9]*\.?[0-9]*$";
-    RegExp regex = RegExp(pattern);
-
-    if (regex.hasMatch(value) && value.isNotEmpty)
-      return null;
-    else
-      return "Digite uma temperatura válida, utilize . (ponto) para decimal.";
-  }
-
-  validatorIntervalToAutoUpdateTemperature(value) {
-    int minInterval = 1;
-    int maxInterval = 30;
-    Pattern pattern = r"^[1-9][0-9]*$";
-    RegExp regex = RegExp(pattern);
-
-    if (regex.hasMatch(value)) {
-      if (int.parse(value) > maxInterval)
-        return "Digite um intervalo entre $minInterval e $maxInterval.";
-      else
-        return null;
-    } else
-      return "Digite um intervalo entre $minInterval e $maxInterval.";
   }
 }
