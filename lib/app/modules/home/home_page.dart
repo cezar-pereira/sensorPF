@@ -299,9 +299,7 @@ class _HomePageState extends State<HomePage> with Widgets {
                   height: 60,
                   width: 220,
                   child: GestureDetector(
-                    onTap: () {
-                      print("update temp");
-                    },
+                    onTap: () async => controller.requestTemperatureUpdate(),
                     child: Text(
                       "Atualziar",
                       style: Theme.of(context).textTheme.headline3,

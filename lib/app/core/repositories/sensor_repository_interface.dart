@@ -9,4 +9,6 @@ abstract class ISensorRepository {
   Future<bool> addSensor({@required Sensor sensor});
 
   Future<bool> update({@required Sensor sensor});
+
+  Future<bool> requestTemperatureUpdate({@required Sensor sensor});
 }

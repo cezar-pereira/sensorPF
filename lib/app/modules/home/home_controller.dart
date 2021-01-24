@@ -33,7 +33,18 @@ class HomeController {
 
   Future<bool> removeSensor() async {
     if (await CheckConnectionNetwork().checkConnection())
-      return this._sensorRepository.remove(sensor: this._sensorSelected.value);
+      return await this
+          ._sensorRepository
+          .remove(sensor: this._sensorSelected.value);
+    else
+      return false;
+  }
+
+  Future<bool> requestTemperatureUpdate() async {
+    if (await CheckConnectionNetwork().checkConnection())
+      return await this
+          ._sensorRepository
+          .requestTemperatureUpdate(sensor: this._sensorSelected.value);
     else
       return false;
   }

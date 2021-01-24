@@ -46,4 +46,18 @@ class SensorRepository extends ISensorRepository {
       return false;
     }
   }
+
+  @override
+  Future<bool> requestTemperatureUpdate({@required Sensor sensor}) async {
+    try {
+      return reference
+          .child(sensor.id)
+          .child("CheckTemperature")
+          .set(true)
+          .then((_) => true)
+          .timeout(Duration(seconds: 5), onTimeout: () => false);
+    } catch (e) {
+      return false;
+    }
+  }
 }
