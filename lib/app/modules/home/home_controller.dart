@@ -22,7 +22,7 @@ class HomeController {
       this._sensors.sort((Sensor sensorA, Sensor sensorB) =>
           sensorA.createdAt.compareTo(sensorB.createdAt));
 
-      this._sensorSelected.value = this._sensors[0];
+      this._sensorSelected.value = this._sensors[indexPage];
     }
   }
 

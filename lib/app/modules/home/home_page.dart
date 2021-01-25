@@ -12,12 +12,18 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> with Widgets {
-  HomeController controller;
-  PageController pageController = PageController();
+  HomeController controller = HomeController();
+  PageController pageController;
+
+  @override
+  void dispose() {
+    pageController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    controller = HomeController();
+    pageController = PageController(initialPage: controller.indexPage);
     return StreamBuilder(
       stream: controller.getStream(),
       builder: (_, snapshot) {
@@ -30,173 +36,167 @@ class _HomePageState extends State<HomePage> with Widgets {
         // controller.listSensors.clear();
 
         return Scaffold(
-            appBar: AppBar(
-              backgroundColor: Colors.transparent,
-              elevation: 0,
-              actions: [
-                if (controller.listSensors.isNotEmpty)
-                  Padding(
-                    padding: EdgeInsets.only(right: 15),
-                    child: Align(
-                      alignment: Alignment.centerRight,
-                      child: GestureDetector(
-                        child: Icon(Icons.settings),
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => SettingsPage(
-                                      sensor:
-                                          controller.sensorSelected.value)));
-                        },
-                      ),
+          appBar: AppBar(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            actions: [
+              if (controller.listSensors.isNotEmpty)
+                Padding(
+                  padding: EdgeInsets.only(right: 15),
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                    child: GestureDetector(
+                      child: Icon(Icons.settings),
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => SettingsPage(
+                                    sensor: controller.sensorSelected.value)));
+                      },
                     ),
-                  )
-              ],
-            ),
-            body: Column(
-              children: [
-                Expanded(
-                  child: controller.listSensors.isEmpty
-                      ? widgetZeroSensors(context)
-                      : widgetSensor(context),
-                ),
-                LayoutBuilder(
-                  builder: (context, BoxConstraints constraints) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 25),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            width: constraints.maxWidth / 2,
-                            child: GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => AddSensorPage(),
-                                    ));
-                              },
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(Icons.add),
-                                  SizedBox(width: 8),
-                                  Text("Adicionar Sensor",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headline5),
-                                ],
-                              ),
-                            ),
-                          ),
-                          Container(
-                            width: constraints.maxWidth / 2,
-                            child: GestureDetector(
-                              onTap: () {
-                                if (controller.listSensors.isNotEmpty) {
-                                  showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        return AlertDialog(
-                                          actions: [
-                                            FlatButton(
-                                                onPressed: () {
-                                                  Navigator.of(context,
-                                                          rootNavigator: true)
-                                                      .pop(false);
-                                                },
-                                                child: Text("Cancelar")),
-                                            FlatButton(
-                                                onPressed: () async {
-                                                  if (await controller
-                                                      .removeSensor()) {
-                                                    ScaffoldMessenger.of(
-                                                            context)
-                                                        .showSnackBar(
-                                                            snackBarSuccess(
-                                                                text:
-                                                                    "Sensor removido.",
-                                                                context:
-                                                                    context));
-                                                    setState(() {});
-                                                  } else {
-                                                    ScaffoldMessenger.of(
-                                                            context)
-                                                        .showSnackBar(snackBarError(
-                                                            text:
-                                                                "Sensor não removido.",
-                                                            context: context));
-                                                  }
-
-                                                  Navigator.of(context,
-                                                          rootNavigator: true)
-                                                      .pop(true);
-                                                },
-                                                child: Text(
-                                                  "Remover",
-                                                  style: TextStyle(
-                                                      color: Colors.red),
-                                                ))
-                                          ],
-                                          title: Text(
-                                            "Remover sensor",
-                                            style:
-                                                TextStyle(color: Colors.black),
-                                          ),
-                                          content: RichText(
-                                              text: TextSpan(
-                                                  style: TextStyle(
-                                                      color: Colors.black),
-                                                  text:
-                                                      "Confirma remoção do sensor ",
-                                                  children: [
-                                                TextSpan(
-                                                    text:
-                                                        "${controller.sensorSelected.value.name}",
-                                                    style: TextStyle(
-                                                        color: Colors.black,
-                                                        fontWeight:
-                                                            FontWeight.bold)),
-                                                TextSpan(
-                                                  text: "?",
-                                                  style: TextStyle(
-                                                      color: Colors.black),
-                                                )
-                                              ])),
-                                        );
-                                      });
-                                }
-                              },
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(Icons.delete_forever,
-                                      color: controller.listSensors.isNotEmpty
-                                          ? null
-                                          : Colors.red),
-                                  SizedBox(width: 8),
-                                  Text("Remover Sensor",
-                                      style: controller.listSensors.isNotEmpty
-                                          ? Theme.of(context)
-                                              .textTheme
-                                              .headline5
-                                          : TextStyle(
-                                              color: Colors.red,
-                                              fontWeight: FontWeight.w100,
-                                              fontSize: 20)),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
+                  ),
                 )
-              ],
-            ));
+            ],
+          ),
+          body: Column(
+            children: [
+              Expanded(
+                child: controller.listSensors.isEmpty
+                    ? widgetZeroSensors(context)
+                    : widgetSensor(context),
+              ),
+              LayoutBuilder(
+                builder: (context, BoxConstraints constraints) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 25),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          width: constraints.maxWidth / 2,
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => AddSensorPage(),
+                                  ));
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.add),
+                                SizedBox(width: 8),
+                                Text("Adicionar Sensor",
+                                    style:
+                                        Theme.of(context).textTheme.headline5),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Container(
+                          width: constraints.maxWidth / 2,
+                          child: GestureDetector(
+                            onTap: () {
+                              if (controller.listSensors.isNotEmpty) {
+                                showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return AlertDialog(
+                                        actions: [
+                                          FlatButton(
+                                              onPressed: () {
+                                                Navigator.of(context,
+                                                        rootNavigator: true)
+                                                    .pop(false);
+                                              },
+                                              child: Text("Cancelar")),
+                                          FlatButton(
+                                              onPressed: () async {
+                                                //retornar para primeira página do pageView
+                                                controller.indexPage = 0;
+                                                if (await controller
+                                                    .removeSensor()) {
+                                                  ScaffoldMessenger.of(context)
+                                                      .showSnackBar(snackBarSuccess(
+                                                          text:
+                                                              "Sensor removido.",
+                                                          context: context));
+                                                  setState(() {});
+                                                } else {
+                                                  ScaffoldMessenger.of(context)
+                                                      .showSnackBar(snackBarError(
+                                                          text:
+                                                              "Sensor não removido.",
+                                                          context: context));
+                                                }
+
+                                                Navigator.of(context,
+                                                        rootNavigator: true)
+                                                    .pop(true);
+                                              },
+                                              child: Text(
+                                                "Remover",
+                                                style: TextStyle(
+                                                    color: Colors.red),
+                                              ))
+                                        ],
+                                        title: Text(
+                                          "Remover sensor",
+                                          style: TextStyle(color: Colors.black),
+                                        ),
+                                        content: RichText(
+                                            text: TextSpan(
+                                                style: TextStyle(
+                                                    color: Colors.black),
+                                                text:
+                                                    "Confirma remoção do sensor ",
+                                                children: [
+                                              TextSpan(
+                                                  text:
+                                                      "${controller.sensorSelected.value.name}",
+                                                  style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontWeight:
+                                                          FontWeight.bold)),
+                                              TextSpan(
+                                                text: "?",
+                                                style: TextStyle(
+                                                    color: Colors.black),
+                                              )
+                                            ])),
+                                      );
+                                    });
+                              }
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.delete_forever,
+                                    color: controller.listSensors.isNotEmpty
+                                        ? null
+                                        : Colors.red),
+                                SizedBox(width: 8),
+                                Text("Remover Sensor",
+                                    style: controller.listSensors.isNotEmpty
+                                        ? Theme.of(context).textTheme.headline5
+                                        : TextStyle(
+                                            color: Colors.red,
+                                            fontWeight: FontWeight.w100,
+                                            fontSize: 20)),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              )
+            ],
+          ),
+        );
       },
     );
   }
@@ -301,7 +301,7 @@ class _HomePageState extends State<HomePage> with Widgets {
                   child: GestureDetector(
                     onTap: () async => controller.requestTemperatureUpdate(),
                     child: Text(
-                      "Atualziar",
+                      "Atualizar",
                       style: Theme.of(context).textTheme.headline3,
                     ),
                   ),
