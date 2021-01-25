@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:sensor_pf/app/core/models/sensor.dart';
 import 'package:sensor_pf/app/core/ui/widgets.dart';
@@ -298,12 +300,36 @@ class _HomePageState extends State<HomePage> with Widgets {
                   color: Theme.of(context).accentColor,
                   height: 60,
                   width: 220,
-                  child: GestureDetector(
-                    onTap: () async => controller.requestTemperatureUpdate(),
-                    child: Text(
-                      "Atualizar",
-                      style: Theme.of(context).textTheme.headline3,
-                    ),
+                  child: ValueListenableBuilder(
+                    valueListenable: controller.timerRequestTemperature,
+                    builder: (_, double timer, child) {
+                      return GestureDetector(
+                        onTap: () async {
+                          if (timer == 0) {
+                            controller.requestTemperatureUpdate();
+                            controller.progressBar();
+                          }
+                        },
+                        child: Container(
+                          padding: EdgeInsets.symmetric(horizontal: 5),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "Atualizar",
+                                style: Theme.of(context).textTheme.headline3,
+                              ),
+                              LinearProgressIndicator(
+                                valueColor:
+                                    AlwaysStoppedAnimation<Color>(Colors.black),
+                                backgroundColor: Colors.transparent,
+                                value: controller.timerRequestTemperature.value,
+                              )
+                            ],
+                          ),
+                        ),
+                      );
+                    },
                   ),
                 )
               ],

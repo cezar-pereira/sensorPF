@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:sensor_pf/app/core/functions/checkConnectionNetwork.dart';
 import 'package:sensor_pf/app/core/models/sensor.dart';
@@ -8,6 +10,7 @@ class HomeController {
   List<Sensor> _sensors = [];
   ValueNotifier<Sensor> _sensorSelected = ValueNotifier(Sensor());
   int indexPage = 0;
+  ValueNotifier<double> _timerRequestTemperature = ValueNotifier(0);
 
   Stream<dynamic> getStream() => this._sensorRepository.getStream();
 
@@ -49,6 +52,17 @@ class HomeController {
       return false;
   }
 
+  void progressBar() {
+    Timer.periodic(Duration(milliseconds: 25), (Timer timer) {
+      _timerRequestTemperature.value += 0.005;
+      print(_timerRequestTemperature.value);
+      if (_timerRequestTemperature.value.toInt() == 1) {
+        timer.cancel();
+        _timerRequestTemperature.value = 0;
+      }
+    });
+  }
+
   List<Sensor> get listSensors => this._sensors;
 
   set sensorSelected(Sensor sensor) {
@@ -56,4 +70,5 @@ class HomeController {
   }
 
   get sensorSelected => this._sensorSelected;
+  get timerRequestTemperature => this._timerRequestTemperature;
 }
