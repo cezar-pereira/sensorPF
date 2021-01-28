@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:sensor_pf/app/core/models/sensor.dart';
 import 'package:sensor_pf/app/core/ui/widgets.dart';
@@ -207,132 +205,137 @@ class _HomePageState extends State<HomePage> with Widgets {
     return ValueListenableBuilder(
         valueListenable: controller.sensorSelected,
         builder: (_, Sensor sensor, child) {
-          return Container(
-            padding: EdgeInsets.only(top: 20),
-            child: Column(
-              children: [
-                Container(
-                  height: 25,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      buttonChangeSensorBack(),
-                      Expanded(
-                        child: Center(
-                          child: Tooltip(
-                            message: sensor.name,
-                            child: Text(
-                              "${sensor.name}",
-                              overflow: TextOverflow.ellipsis,
-                              style: Theme.of(context).textTheme.headline6,
-                              textAlign: TextAlign.center,
+          return SingleChildScrollView(
+            physics: BouncingScrollPhysics(),
+            child: Container(
+              padding: EdgeInsets.only(top: 20),
+              child: Column(
+                children: [
+                  Container(
+                    height: 25,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        buttonChangeSensorBack(),
+                        Expanded(
+                          child: Center(
+                            child: Tooltip(
+                              message: sensor.name,
+                              child: Text(
+                                "${sensor.name}",
+                                overflow: TextOverflow.ellipsis,
+                                style: Theme.of(context).textTheme.headline6,
+                                textAlign: TextAlign.center,
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      buttonChangeSensorForward(),
-                    ],
+                        buttonChangeSensorForward(),
+                      ],
+                    ),
                   ),
-                ),
-                Padding(
-                    padding: EdgeInsets.symmetric(vertical: 30),
-                    child: Text(
-                      "Temperatura atual",
-                      style: Theme.of(context).textTheme.headline1,
-                    )),
-                Container(
-                  height: 200,
-                  width: double.infinity,
-                  child: PageView.builder(
-                    physics: BouncingScrollPhysics(),
-                    controller: pageController,
-                    itemCount: controller.listSensors.length,
-                    itemBuilder: (context, index) {
-                      return Container(
-                        margin: EdgeInsets.all(3),
-                        child: Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            SizedBox(
-                              height: 200,
-                              width: 200,
-                              child: CircularProgressIndicator(
-                                strokeWidth: 5,
-                                value: controller.calculatePercentToAlert(),
-                              ),
-                            ),
-                            Text(
-                              "${sensor.temperatures.real.toStringAsFixed(2)}º",
-                              style: Theme.of(context).textTheme.headline4,
-                            )
-                          ],
-                        ),
-                      );
-                    },
-                    onPageChanged: (int index) {
-                      controller.sensorSelected = controller.listSensors[index];
-                      controller.indexPage = index;
-                    },
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: 40),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      cardTemperatures(
-                          text: "Mínima",
-                          temperature: sensor.temperatures.minimum,
-                          context: context),
-                      cardTemperatures(
-                          text: "Média",
-                          temperature: sensor.temperatures.average,
-                          context: context),
-                      cardTemperatures(
-                          text: "Máxima",
-                          temperature: sensor.temperatures.maximum,
-                          context: context),
-                    ],
-                  ),
-                ),
-                Container(
-                  alignment: Alignment.center,
-                  color: Theme.of(context).accentColor,
-                  height: 60,
-                  width: 220,
-                  child: ValueListenableBuilder(
-                    valueListenable: controller.timerRequestTemperature,
-                    builder: (_, double timer, child) {
-                      return GestureDetector(
-                        onTap: () async {
-                          if (timer == 0) {
-                            controller.requestTemperatureUpdate();
-                            controller.progressBar();
-                          }
-                        },
-                        child: Container(
-                          padding: EdgeInsets.symmetric(horizontal: 5),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                  Padding(
+                      padding: EdgeInsets.symmetric(vertical: 30),
+                      child: Text(
+                        "Temperatura atual",
+                        style: Theme.of(context).textTheme.headline1,
+                      )),
+                  Container(
+                    height: 200,
+                    width: double.infinity,
+                    child: PageView.builder(
+                      physics: BouncingScrollPhysics(),
+                      controller: pageController,
+                      itemCount: controller.listSensors.length,
+                      itemBuilder: (context, index) {
+                        return Container(
+                          margin: EdgeInsets.all(3),
+                          child: Stack(
+                            alignment: Alignment.center,
                             children: [
-                              Text(
-                                "Atualizar",
-                                style: Theme.of(context).textTheme.headline3,
+                              SizedBox(
+                                height: 200,
+                                width: 200,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 5,
+                                  value: controller.calculatePercentToAlert(),
+                                ),
                               ),
-                              LinearProgressIndicator(
-                                valueColor:
-                                    AlwaysStoppedAnimation<Color>(Colors.black),
-                                backgroundColor: Colors.transparent,
-                                value: controller.timerRequestTemperature.value,
+                              Text(
+                                "${sensor.temperatures.real.toStringAsFixed(2)}º",
+                                style: Theme.of(context).textTheme.headline4,
                               )
                             ],
                           ),
-                        ),
-                      );
-                    },
+                        );
+                      },
+                      onPageChanged: (int index) {
+                        controller.sensorSelected =
+                            controller.listSensors[index];
+                        controller.indexPage = index;
+                      },
+                    ),
                   ),
-                )
-              ],
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 40),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        cardTemperatures(
+                            text: "Mínima",
+                            temperature: sensor.temperatures.minimum,
+                            context: context),
+                        cardTemperatures(
+                            text: "Média",
+                            temperature: sensor.temperatures.average,
+                            context: context),
+                        cardTemperatures(
+                            text: "Máxima",
+                            temperature: sensor.temperatures.maximum,
+                            context: context),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    alignment: Alignment.center,
+                    color: Theme.of(context).accentColor,
+                    height: 60,
+                    width: 220,
+                    child: ValueListenableBuilder(
+                      valueListenable: controller.timerRequestTemperature,
+                      builder: (_, double timer, child) {
+                        return GestureDetector(
+                          onTap: () async {
+                            if (timer == 0) {
+                              controller.requestTemperatureUpdate();
+                              controller.progressBar();
+                            }
+                          },
+                          child: Container(
+                            padding: EdgeInsets.symmetric(horizontal: 5),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "Atualizar",
+                                  style: Theme.of(context).textTheme.headline3,
+                                ),
+                                LinearProgressIndicator(
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                      Colors.black),
+                                  backgroundColor: Colors.transparent,
+                                  value:
+                                      controller.timerRequestTemperature.value,
+                                )
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  )
+                ],
+              ),
             ),
           );
         });

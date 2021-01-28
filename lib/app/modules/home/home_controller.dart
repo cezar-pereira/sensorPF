@@ -12,8 +12,6 @@ class HomeController {
   int indexPage = 0;
   ValueNotifier<double> _timerRequestTemperature = ValueNotifier(0);
 
-  Stream<dynamic> getStream() => this._sensorRepository.getStream();
-
   void buildListSensor({@required AsyncSnapshot snapshot}) {
     this._sensors.clear();
 
@@ -62,6 +60,8 @@ class HomeController {
       }
     });
   }
+
+  Stream<dynamic> getStream() => this._sensorRepository.getStream();
 
   List<Sensor> get listSensors => this._sensors;
 
