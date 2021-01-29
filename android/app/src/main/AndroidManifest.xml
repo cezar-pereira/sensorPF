@@ -2,7 +2,7 @@
     package="com.example.sensor_pf">
    <application
         android:label="sensor_pf"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/launcher_icon">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
