@@ -349,7 +349,10 @@ class _HomePageState extends State<HomePage> with Widgets {
           children: [
             CircularProgressIndicator(),
             SizedBox(height: 8),
-            Text("Carregando dados"),
+            Text(
+              "Carregando dados",
+              style: Theme.of(context).textTheme.headline2,
+            ),
           ],
         ),
       ),
