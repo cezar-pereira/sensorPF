@@ -11,7 +11,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'SensorPF',
+      title: 'Sensor De Temperatura',
       theme: ThemeData(
           textTheme: TextTheme(
             headline1: TextStyle(
