@@ -297,7 +297,6 @@ class _HomePageState extends State<HomePage> with Widgets {
                     ),
                   ),
                   Container(
-                    alignment: Alignment.center,
                     color: Theme.of(context).accentColor,
                     height: 60,
                     width: 220,
@@ -313,20 +312,24 @@ class _HomePageState extends State<HomePage> with Widgets {
                           },
                           child: Container(
                             padding: EdgeInsets.symmetric(horizontal: 5),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                            child: Stack(
+                              alignment: Alignment.center,
                               children: [
                                 Text(
                                   "Atualizar",
                                   style: Theme.of(context).textTheme.headline3,
                                 ),
-                                LinearProgressIndicator(
-                                  valueColor: AlwaysStoppedAnimation<Color>(
-                                      Colors.black),
-                                  backgroundColor: Colors.transparent,
-                                  value:
-                                      controller.timerRequestTemperature.value,
-                                )
+                                Positioned(
+                                    left: 0,
+                                    right: 0,
+                                    bottom: 4,
+                                    child: LinearProgressIndicator(
+                                      valueColor: AlwaysStoppedAnimation<Color>(
+                                          Colors.black),
+                                      backgroundColor: Colors.transparent,
+                                      value: controller
+                                          .timerRequestTemperature.value,
+                                    ))
                               ],
                             ),
                           ),
