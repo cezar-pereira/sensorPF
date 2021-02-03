@@ -44,4 +44,7 @@ class Validators {
     } else
       return "Digite um intervalo entre $minInterval e $maxInterval.";
   }
+
+  validatorPassword(String value) =>
+      (value.isEmpty) ? "Uma senha deve ser inserida." : null;
 }

@@ -6,6 +6,7 @@ class Widgets {
       @required String text,
       @required Function validation,
       keyBoardType = TextInputType.text,
+      obscureText = false,
       @required context}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -15,6 +16,7 @@ class Widgets {
           style: Theme.of(context).textTheme.headline5,
         ),
         TextFormField(
+          obscureText: obscureText,
           style: TextStyle(color: Colors.white.withOpacity(0.6)),
           controller: controller,
           keyboardType: keyBoardType,

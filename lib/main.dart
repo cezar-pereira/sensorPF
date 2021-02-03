@@ -1,8 +1,10 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:sensor_pf/app/modules/login/login_page.dart';
 
-import 'app/modules/home/home_page.dart';
-
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(App());
 }
 
@@ -37,7 +39,7 @@ class App extends StatelessWidget {
           accentColor: Colors.amber,
           primarySwatch: Colors.amber,
           canvasColor: Color(0xFF292929)),
-      home: HomePage(),
+      home: LoginPage(),
     );
   }
 }
