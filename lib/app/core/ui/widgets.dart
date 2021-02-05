@@ -7,6 +7,7 @@ class Widgets {
       @required Function validation,
       keyBoardType = TextInputType.text,
       obscureText = false,
+      isPassword = false,
       @required context}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -15,21 +16,38 @@ class Widgets {
           "$text",
           style: Theme.of(context).textTheme.headline5,
         ),
-        TextFormField(
-          obscureText: obscureText,
-          style: TextStyle(color: Colors.white.withOpacity(0.6)),
-          controller: controller,
-          keyboardType: keyBoardType,
-          validator: (value) {
-            return validation(value);
-          },
-          decoration: InputDecoration(
-            enabledBorder: UnderlineInputBorder(
-                borderSide:
-                    BorderSide(color: Theme.of(context).accentColor, width: 2)),
-            focusedBorder: UnderlineInputBorder(
-                borderSide:
-                    BorderSide(color: Theme.of(context).accentColor, width: 2)),
+        Container(
+          margin: EdgeInsets.only(top: 8),
+          child: TextFormField(
+            obscureText: obscureText,
+            style: TextStyle(color: Colors.white, fontSize: 20),
+            controller: controller,
+            keyboardType: keyBoardType,
+            validator: (value) {
+              return validation(value);
+            },
+            cursorColor: Colors.white,
+            decoration: InputDecoration(
+              suffixIcon: isPassword
+                  ? obscureText
+                      ? Icon(Icons.visibility,
+                          color: Theme.of(context).iconTheme.color)
+                      : Icon(Icons.visibility_off,
+                          color: Theme.of(context).iconTheme.color)
+                  : null,
+              filled: true,
+              hoverColor: Color(0xFF3D3D3E),
+              focusColor: Color(0xFF3D3D3E),
+              fillColor: Color(0xFF3D3D3E),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: BorderSide.none,
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide.none,
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
           ),
         ),
       ],
