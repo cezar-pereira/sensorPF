@@ -6,6 +6,10 @@ class LoginController {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
+  User checkAuthentication() {
+    return _auth.currentUser;
+  }
+
   Future<bool> signInWithEmailAndPassword() async {
     try {
       await _auth.signInWithEmailAndPassword(
@@ -14,7 +18,6 @@ class LoginController {
       );
       return true;
     } catch (e) {
-      print("chega aqui");
       return false;
     }
   }
