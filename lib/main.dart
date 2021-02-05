@@ -17,28 +17,37 @@ class App extends StatelessWidget {
       theme: ThemeData(
           textTheme: TextTheme(
             headline1: TextStyle(
-                color: Colors.white, fontWeight: FontWeight.w400, fontSize: 40),
+                color: Color(0xFFE1E1E9),
+                fontWeight: FontWeight.w400,
+                fontSize: 40),
             headline2: TextStyle(
-                color: Colors.white, fontWeight: FontWeight.w100, fontSize: 40),
+                color: Color(0xFFE1E1E9),
+                fontWeight: FontWeight.w100,
+                fontSize: 40),
             headline3: TextStyle(
                 color: Color(0xFF292929).withOpacity(0.9),
                 fontWeight: FontWeight.w300,
                 fontSize: 45),
             headline4: TextStyle(
-                color: Colors.white, fontWeight: FontWeight.w100, fontSize: 45),
+                color: Color(0xFFE1E1E9),
+                fontWeight: FontWeight.w100,
+                fontSize: 45),
             headline5: TextStyle(
-                color: Colors.white, fontWeight: FontWeight.w100, fontSize: 20),
+                color: Color(0xFFE1E1E9),
+                fontWeight: FontWeight.w100,
+                fontSize: 20),
             headline6: TextStyle(
-                color: Colors.white, fontWeight: FontWeight.w200, fontSize: 25),
+                color: Color(0xFFE1E1E9),
+                fontWeight: FontWeight.w200,
+                fontSize: 25),
           ),
-          iconTheme: IconThemeData(color: Colors.white),
+          iconTheme: IconThemeData(color: Color(0xFFE1E1E9)),
           appBarTheme: AppBarTheme(
             brightness: Brightness.dark,
-            iconTheme: IconThemeData(color: Colors.white),
+            iconTheme: IconThemeData(color: Color(0xFFE1E1E9)),
           ),
-          accentColor: Colors.amber,
-          primarySwatch: Colors.amber,
-          canvasColor: Color(0xFF292929)),
+          accentColor: Color(0xFFFF734C),
+          canvasColor: Color(0xFF1C1C1E)),
       home: LoginPage(),
     );
   }
