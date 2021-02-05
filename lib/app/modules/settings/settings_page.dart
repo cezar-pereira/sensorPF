@@ -60,19 +60,18 @@ class _SettingsPageState extends State<SettingsPage> with Widgets {
               alignment: Alignment.center,
               child: Column(
                 children: [
-                  SizedBox(height: 30),
                   textField(
                       context: context,
                       controller: widget.controller.nameController,
                       text: 'Nome',
                       validation: Validators().validatorName),
-                  SizedBox(height: 30),
+                  SizedBox(height: 20),
                   textField(
                       context: context,
                       controller: widget.controller.emailController,
                       text: 'E-mail',
                       validation: Validators().validatorEmail),
-                  SizedBox(height: 30),
+                  SizedBox(height: 20),
                   textField(
                       context: context,
                       controller: widget.controller.temperatureAlertController,
@@ -80,7 +79,7 @@ class _SettingsPageState extends State<SettingsPage> with Widgets {
                       validation: Validators().validatorTemperatureAlert,
                       keyBoardType:
                           TextInputType.numberWithOptions(decimal: true)),
-                  SizedBox(height: 30),
+                  SizedBox(height: 20),
                   textField(
                       context: context,
                       controller: widget.controller.intervalToUpdateController,
@@ -93,8 +92,15 @@ class _SettingsPageState extends State<SettingsPage> with Widgets {
                   Container(
                     alignment: Alignment.center,
                     height: 50,
-                    width: 250,
-                    color: Theme.of(context).accentColor,
+                    decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                              color: Colors.white.withOpacity(0.2),
+                              blurRadius: 5,
+                              offset: Offset(0, 3.5))
+                        ],
+                        color: Theme.of(context).accentColor,
+                        borderRadius: BorderRadius.circular(40)),
                     child: GestureDetector(
                       onTap: () async {
                         if (formChanged) {
