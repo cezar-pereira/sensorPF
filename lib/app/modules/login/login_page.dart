@@ -72,7 +72,6 @@ class _LoginPageState extends State<LoginPage> with Widgets {
                               right: 9,
                               child: GestureDetector(
                                 onTap: () {
-                                  print("clicou");
                                   changeObscurePassword();
                                 },
                                 child: Container(

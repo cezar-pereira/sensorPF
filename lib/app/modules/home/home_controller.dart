@@ -1,11 +1,13 @@
 import 'dart:async';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:sensor_pf/app/core/functions/checkConnectionNetwork.dart';
 import 'package:sensor_pf/app/core/models/sensor.dart';
 import 'package:sensor_pf/app/core/repositories/sensor_repository.dart';
 
 class HomeController {
+  FirebaseAuth _auth = FirebaseAuth.instance;
   SensorRepository _sensorRepository = SensorRepository();
   List<Sensor> _sensors = [];
   ValueNotifier<Sensor> _sensorSelected = ValueNotifier(Sensor());
@@ -53,13 +55,14 @@ class HomeController {
   void progressBar() {
     Timer.periodic(Duration(milliseconds: 25), (Timer timer) {
       _timerRequestTemperature.value += 0.005;
-      print(_timerRequestTemperature.value);
       if (_timerRequestTemperature.value.toInt() == 1) {
         timer.cancel();
         _timerRequestTemperature.value = 0;
       }
     });
   }
+
+  Future<bool> singOut() => _auth.signOut().then((value) => true);
 
   Stream<dynamic> getStream() => this._sensorRepository.getStream();
 

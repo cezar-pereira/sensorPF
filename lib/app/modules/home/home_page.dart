@@ -3,6 +3,7 @@ import 'package:sensor_pf/app/core/models/sensor.dart';
 import 'package:sensor_pf/app/core/ui/widgets.dart';
 import 'package:sensor_pf/app/modules/home/home_controller.dart';
 import 'package:sensor_pf/app/modules/home/widgets/add_sensor/add_sensor_page.dart';
+import 'package:sensor_pf/app/modules/login/login_page.dart';
 import 'package:sensor_pf/app/modules/settings/settings_page.dart';
 
 // ignore: must_be_immutable
@@ -38,6 +39,18 @@ class _HomePageState extends State<HomePage> with Widgets {
         return Scaffold(
           appBar: AppBar(
             backgroundColor: Colors.transparent,
+            leadingWidth: 100,
+            leading: Center(
+              child: GestureDetector(
+                child: Text("Logout", style: TextStyle(fontSize: 25)),
+                onTap: () async {
+                  if (await controller.singOut()) {
+                    Navigator.pushReplacement(context,
+                        MaterialPageRoute(builder: (context) => LoginPage()));
+                  }
+                },
+              ),
+            ),
             elevation: 0,
             actions: [
               if (controller.listSensors.isNotEmpty)
@@ -212,7 +225,7 @@ class _HomePageState extends State<HomePage> with Widgets {
               child: Column(
                 children: [
                   Container(
-                    height: 25,
+                    height: 30,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -296,46 +309,52 @@ class _HomePageState extends State<HomePage> with Widgets {
                       ],
                     ),
                   ),
-                  Container(
-                    color: Theme.of(context).accentColor,
-                    height: 60,
-                    width: 220,
-                    child: ValueListenableBuilder(
-                      valueListenable: controller.timerRequestTemperature,
-                      builder: (_, double timer, child) {
-                        return GestureDetector(
-                          onTap: () async {
-                            if (timer == 0) {
-                              controller.requestTemperatureUpdate();
-                              controller.progressBar();
-                            }
-                          },
-                          child: Container(
-                            padding: EdgeInsets.symmetric(horizontal: 5),
-                            child: Stack(
-                              alignment: Alignment.center,
-                              children: [
-                                Text(
-                                  "Atualizar",
-                                  style: Theme.of(context).textTheme.headline3,
-                                ),
-                                Positioned(
-                                    left: 0,
-                                    right: 0,
-                                    bottom: 4,
-                                    child: LinearProgressIndicator(
-                                      valueColor: AlwaysStoppedAnimation<Color>(
-                                          Colors.black),
-                                      backgroundColor: Colors.transparent,
-                                      value: controller
-                                          .timerRequestTemperature.value,
-                                    ))
+                  ValueListenableBuilder(
+                    valueListenable: controller.timerRequestTemperature,
+                    builder: (_, double timer, child) {
+                      return GestureDetector(
+                        onTap: () async {
+                          if (timer == 0) {
+                            controller.requestTemperatureUpdate();
+                            controller.progressBar();
+                          }
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                              boxShadow: [
+                                BoxShadow(
+                                    color: Colors.white.withOpacity(0.2),
+                                    blurRadius: 5,
+                                    offset: Offset(0, 3.5))
                               ],
-                            ),
+                              color: Theme.of(context).accentColor,
+                              borderRadius: BorderRadius.circular(40)),
+                          height: 60,
+                          width: 220,
+                          padding: EdgeInsets.symmetric(horizontal: 25),
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              Text(
+                                "Atualizar",
+                                style: Theme.of(context).textTheme.button,
+                              ),
+                              Positioned(
+                                  left: 0,
+                                  right: 0,
+                                  bottom: 6,
+                                  child: LinearProgressIndicator(
+                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                        Colors.black),
+                                    backgroundColor: Colors.transparent,
+                                    value: controller
+                                        .timerRequestTemperature.value,
+                                  ))
+                            ],
                           ),
-                        );
-                      },
-                    ),
+                        ),
+                      );
+                    },
                   )
                 ],
               ),
