@@ -58,10 +58,13 @@ class AddSensorPage extends StatelessWidget with Widgets {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(40),
+                          color: Theme.of(context).accentColor,
+                        ),
                         alignment: Alignment.center,
                         height: 50,
                         width: 150,
-                        color: Theme.of(context).accentColor,
                         child: GestureDetector(
                           onTap: () async {
                             if (_formKey.currentState.validate()) {
@@ -90,10 +93,12 @@ class AddSensorPage extends StatelessWidget with Widgets {
                         ),
                       ),
                       Container(
+                        decoration: BoxDecoration(
+                            color: Color(0xFFFF5107),
+                            borderRadius: BorderRadius.circular(40)),
                         alignment: Alignment.center,
                         height: 50,
                         width: 150,
-                        color: Color(0xFFFF5107),
                         child: GestureDetector(
                           onTap: () {
                             Navigator.pop(context,
