@@ -82,38 +82,38 @@ class _LoginPageState extends State<LoginPage> with Widgets {
                               ))
                         ]),
                         SizedBox(height: 30),
-                        Container(
-                          decoration: BoxDecoration(
-                              boxShadow: [
-                                BoxShadow(
-                                    color: Colors.white.withOpacity(0.2),
-                                    blurRadius: 5,
-                                    offset: Offset(0, 3.5))
-                              ],
-                              color: Theme.of(context).accentColor,
-                              borderRadius: BorderRadius.circular(40)),
-                          alignment: Alignment.center,
-                          height: 56,
-                          child: GestureDetector(
-                            onTap: () async {
-                              if (_formChanged) {
-                                if (_formKey.currentState.validate()) {
-                                  if (await _controller
-                                      .signInWithEmailAndPassword()) {
-                                    Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => HomePage()));
-                                  } else {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                        snackBarError(
-                                            text: "Falha no login",
-                                            context: context));
-                                  }
-                                  _formChanged = false;
+                        GestureDetector(
+                          onTap: () async {
+                            if (_formChanged) {
+                              if (_formKey.currentState.validate()) {
+                                if (await _controller
+                                    .signInWithEmailAndPassword()) {
+                                  Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => HomePage()));
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      snackBarError(
+                                          text: "Falha no login",
+                                          context: context));
                                 }
+                                _formChanged = false;
                               }
-                            },
+                            }
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                                boxShadow: [
+                                  BoxShadow(
+                                      color: Colors.white.withOpacity(0.2),
+                                      blurRadius: 5,
+                                      offset: Offset(0, 3.5))
+                                ],
+                                color: Theme.of(context).accentColor,
+                                borderRadius: BorderRadius.circular(40)),
+                            alignment: Alignment.center,
+                            height: 56,
                             child: Text(
                               "Entrar",
                               style: Theme.of(context).textTheme.button,
