@@ -20,6 +20,7 @@ class AddSensorController {
           temperatureAlert: double.parse(temperatureAlertController.text));
 
       Sensor sensor = Sensor(
+        checkTemperature: false,
         name: nameController.text,
         createdAt: DateTime.now().toString(),
         settings: settings,
