@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:sensor_pf/app/core/ui/widgets.dart';
 import 'package:sensor_pf/app/core/validators/validators.dart';
@@ -9,6 +10,7 @@ class AddSensorPage extends StatelessWidget with Widgets {
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
+    controller.emailController.text = FirebaseAuth.instance.currentUser.email;
     return Material(
       child: Form(
         key: _formKey,
