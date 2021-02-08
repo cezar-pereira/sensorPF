@@ -89,38 +89,38 @@ class _SettingsPageState extends State<SettingsPage> with Widgets {
                       keyBoardType:
                           TextInputType.numberWithOptions(decimal: false)),
                   SizedBox(height: 50),
-                  Container(
-                    alignment: Alignment.center,
-                    height: 50,
-                    decoration: BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                              color: Colors.white.withOpacity(0.2),
-                              blurRadius: 5,
-                              offset: Offset(0, 3.5))
-                        ],
-                        color: Theme.of(context).accentColor,
-                        borderRadius: BorderRadius.circular(40)),
-                    child: GestureDetector(
-                      onTap: () async {
-                        if (formChanged) {
-                          if (widget._formKey.currentState.validate()) {
-                            if (await widget.controller
-                                .updateSensor(widget.sensor)) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  snackBarSuccess(
-                                      text: "Atualizado com sucesso.",
-                                      context: context));
-                              formChanged = false;
-                            } else {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  snackBarError(
-                                      text: "Erro ao atualizar.",
-                                      context: context));
-                            }
+                  GestureDetector(
+                    onTap: () async {
+                      if (formChanged) {
+                        if (widget._formKey.currentState.validate()) {
+                          if (await widget.controller
+                              .updateSensor(widget.sensor)) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                snackBarSuccess(
+                                    text: "Atualizado com sucesso.",
+                                    context: context));
+                            formChanged = false;
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                snackBarError(
+                                    text: "Erro ao atualizar.",
+                                    context: context));
                           }
                         }
-                      },
+                      }
+                    },
+                    child: Container(
+                      alignment: Alignment.center,
+                      height: 50,
+                      decoration: BoxDecoration(
+                          boxShadow: [
+                            BoxShadow(
+                                color: Colors.white.withOpacity(0.2),
+                                blurRadius: 5,
+                                offset: Offset(0, 3.5))
+                          ],
+                          color: Theme.of(context).accentColor,
+                          borderRadius: BorderRadius.circular(40)),
                       child: Text(
                         "Atualizar",
                         style:
