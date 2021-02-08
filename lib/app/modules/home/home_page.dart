@@ -119,12 +119,18 @@ class _HomePageState extends State<HomePage> with Widgets {
                                       return AlertDialog(
                                         actions: [
                                           FlatButton(
-                                              onPressed: () {
-                                                Navigator.of(context,
-                                                        rootNavigator: true)
-                                                    .pop(false);
-                                              },
-                                              child: Text("Cancelar")),
+                                            onPressed: () {
+                                              Navigator.of(context,
+                                                      rootNavigator: true)
+                                                  .pop(false);
+                                            },
+                                            child: Text(
+                                              "Cancelar",
+                                              style: TextStyle(
+                                                  color: Theme.of(context)
+                                                      .canvasColor),
+                                            ),
+                                          ),
                                           FlatButton(
                                               onPressed: () async {
                                                 //retornar para primeira página do pageView
@@ -152,7 +158,8 @@ class _HomePageState extends State<HomePage> with Widgets {
                                               child: Text(
                                                 "Remover",
                                                 style: TextStyle(
-                                                    color: Colors.red),
+                                                    color: Colors.red
+                                                        .withOpacity(0.5)),
                                               ))
                                         ],
                                         title: Text(
