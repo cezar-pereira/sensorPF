@@ -3,6 +3,7 @@ import 'package:sensor_pf/app/core/ui/widgets.dart';
 import 'package:sensor_pf/app/core/validators/validators.dart';
 import 'package:sensor_pf/app/modules/home/home_page.dart';
 import 'package:sensor_pf/app/modules/login/login_controller.dart';
+import 'package:sensor_pf/app/modules/login/widgets/icon_app/icon_app.dart';
 
 // ignore: must_be_immutable
 class LoginPage extends StatefulWidget {
@@ -37,7 +38,7 @@ class _LoginPageState extends State<LoginPage> with Widgets {
     return _controller.checkAuthentication() != null
         ? HomePage()
         : Scaffold(
-            body: Center(
+            body: SafeArea(
               child: SingleChildScrollView(
                 physics: BouncingScrollPhysics(),
                 child: Form(
@@ -46,11 +47,13 @@ class _LoginPageState extends State<LoginPage> with Widgets {
                     _formChanged = true;
                   },
                   child: Container(
-                    alignment: Alignment.center,
-                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    padding: EdgeInsets.fromLTRB(20, 60, 20, 0),
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
+                        IconApp(),
+                        SizedBox(
+                          height: 80,
+                        ),
                         textField(
                             context: context,
                             controller: _controller.emailController,

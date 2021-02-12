@@ -118,7 +118,7 @@ class _HomePageState extends State<HomePage> with Widgets {
                                     builder: (context) {
                                       return AlertDialog(
                                         actions: [
-                                          FlatButton(
+                                          TextButton(
                                             onPressed: () {
                                               Navigator.of(context,
                                                       rootNavigator: true)
@@ -131,7 +131,7 @@ class _HomePageState extends State<HomePage> with Widgets {
                                                       .canvasColor),
                                             ),
                                           ),
-                                          FlatButton(
+                                          TextButton(
                                               onPressed: () async {
                                                 //retornar para primeira página do pageView
                                                 controller.indexPage = 0;
