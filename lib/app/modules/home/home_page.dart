@@ -276,14 +276,36 @@ class _HomePageState extends State<HomePage> with Widgets {
                               SizedBox(
                                 height: 200,
                                 width: 200,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 5,
-                                  value: controller.calculatePercentToAlert(),
+                                child: TweenAnimationBuilder(
+                                  key: ValueKey<double>(
+                                      sensor.temperatures.real),
+                                  curve: Curves.bounceOut,
+                                  duration: const Duration(seconds: 3),
+                                  tween: Tween<double>(
+                                      begin: 0,
+                                      end:
+                                          controller.calculatePercentToAlert()),
+                                  builder: (_, value, child) {
+                                    return CircularProgressIndicator(
+                                      value: value,
+                                      strokeWidth: 5,
+                                    );
+                                  },
                                 ),
                               ),
-                              Text(
-                                "${sensor.temperatures.real.toStringAsFixed(2)}º",
-                                style: Theme.of(context).textTheme.headline4,
+                              AnimatedSwitcher(
+                                duration: const Duration(seconds: 1),
+                                transitionBuilder:
+                                    (child, Animation<double> animation) {
+                                  return ScaleTransition(
+                                      child: child, scale: animation);
+                                },
+                                child: Text(
+                                  "${sensor.temperatures.real.toStringAsFixed(2)}º",
+                                  style: Theme.of(context).textTheme.headline4,
+                                  key: ValueKey<double>(
+                                      sensor.temperatures.real),
+                                ),
                               )
                             ],
                           ),
