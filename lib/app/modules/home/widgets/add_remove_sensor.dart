@@ -93,7 +93,7 @@ class AddRemoveSensor extends StatelessWidget with Widgets {
                                       children: [
                                     TextSpan(
                                         text:
-                                            "${controller.sensorSelected.value.name}",
+                                            "${controller.sensorSelected.name}",
                                         style: TextStyle(
                                             color: Colors.black,
                                             fontWeight: FontWeight.bold)),

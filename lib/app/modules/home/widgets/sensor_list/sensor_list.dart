@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:sensor_pf/app/core/models/sensor.dart';
 import 'package:sensor_pf/app/modules/home/home_controller.dart';
 
 import 'card_temperatures.dart';
@@ -35,9 +34,9 @@ class _SensorListState extends State<SensorList> {
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder(
-        valueListenable: widget.controller.sensorSelected,
-        builder: (_, Sensor sensor, child) {
+    return AnimatedBuilder(
+        animation: widget.controller,
+        builder: (_, __) {
           return SingleChildScrollView(
             physics: BouncingScrollPhysics(),
             child: Container(
@@ -53,9 +52,9 @@ class _SensorListState extends State<SensorList> {
                         Expanded(
                           child: Center(
                             child: Tooltip(
-                              message: sensor.name,
+                              message: widget.controller.sensorSelected.name,
                               child: Text(
-                                "${sensor.name}",
+                                "${widget.controller.sensorSelected.name}",
                                 overflow: TextOverflow.ellipsis,
                                 style: Theme.of(context).textTheme.headline6,
                                 textAlign: TextAlign.center,
@@ -90,8 +89,8 @@ class _SensorListState extends State<SensorList> {
                                 height: 200,
                                 width: 200,
                                 child: TweenAnimationBuilder(
-                                  key: ValueKey<double>(
-                                      sensor.temperatures.real),
+                                  key: ValueKey<double>(widget.controller
+                                      .sensorSelected.temperatures.real),
                                   curve: Curves.bounceOut,
                                   duration: const Duration(seconds: 3),
                                   tween: Tween<double>(
@@ -114,10 +113,10 @@ class _SensorListState extends State<SensorList> {
                                       child: child, scale: animation);
                                 },
                                 child: Text(
-                                  "${sensor.temperatures.real.toStringAsFixed(2)}º",
+                                  "${widget.controller.sensorSelected.temperatures.real.toStringAsFixed(2)}º",
                                   style: Theme.of(context).textTheme.headline4,
-                                  key: ValueKey<double>(
-                                      sensor.temperatures.real),
+                                  key: ValueKey<double>(widget.controller
+                                      .sensorSelected.temperatures.real),
                                 ),
                               )
                             ],
@@ -138,22 +137,25 @@ class _SensorListState extends State<SensorList> {
                       children: [
                         CardTemperatures(
                             text: "Mínima",
-                            temperature: sensor.temperatures.minimum),
+                            temperature: widget.controller.sensorSelected
+                                .temperatures.minimum),
                         CardTemperatures(
                             text: "Média",
-                            temperature: sensor.temperatures.average),
+                            temperature: widget.controller.sensorSelected
+                                .temperatures.average),
                         CardTemperatures(
                             text: "Máxima",
-                            temperature: sensor.temperatures.maximum),
+                            temperature: widget.controller.sensorSelected
+                                .temperatures.maximum),
                       ],
                     ),
                   ),
-                  ValueListenableBuilder(
-                    valueListenable: widget.controller.timerRequestTemperature,
-                    builder: (_, double timer, child) {
+                  AnimatedBuilder(
+                    animation: widget.controller,
+                    builder: (_, __) {
                       return GestureDetector(
                         onTap: () async {
-                          if (timer == 0) {
+                          if (widget.controller.timerRequestTemperature == 0) {
                             widget.controller.requestTemperatureUpdate();
                             widget.controller.progressBar();
                           }
@@ -186,8 +188,8 @@ class _SensorListState extends State<SensorList> {
                                     valueColor: AlwaysStoppedAnimation<Color>(
                                         Colors.black),
                                     backgroundColor: Colors.transparent,
-                                    value: widget.controller
-                                        .timerRequestTemperature.value,
+                                    value: widget
+                                        .controller.timerRequestTemperature,
                                   ))
                             ],
                           ),

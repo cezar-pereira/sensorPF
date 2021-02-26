@@ -27,53 +27,56 @@ class _HomePageState extends State<HomePage> with Widgets {
 
         controller.buildListSensor(snapshot: snapshot);
 
-        return Scaffold(
-          appBar: AppBar(
-            backgroundColor: Colors.transparent,
-            leadingWidth: 100,
-            leading: Center(
-              child: GestureDetector(
-                child: Text("Logout", style: TextStyle(fontSize: 25)),
-                onTap: () async {
-                  if (await controller.singOut()) {
-                    Navigator.pushReplacement(context,
-                        MaterialPageRoute(builder: (context) => LoginPage()));
-                  }
-                },
+        return AnimatedBuilder(
+          animation: controller,
+          builder: (context, child) => Scaffold(
+            appBar: AppBar(
+              backgroundColor: Colors.transparent,
+              leadingWidth: 100,
+              leading: Center(
+                child: GestureDetector(
+                  child: Text("Logout", style: TextStyle(fontSize: 25)),
+                  onTap: () async {
+                    if (await controller.singOut()) {
+                      Navigator.pushReplacement(context,
+                          MaterialPageRoute(builder: (context) => LoginPage()));
+                    }
+                  },
+                ),
               ),
-            ),
-            elevation: 0,
-            actions: [
-              if (controller.listSensors.isNotEmpty)
-                Padding(
-                  padding: EdgeInsets.only(right: 15),
-                  child: Align(
-                    alignment: Alignment.centerRight,
-                    child: GestureDetector(
-                      child: Icon(Icons.settings),
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => SettingsPage(
-                                    sensor: controller.sensorSelected.value)));
-                      },
+              elevation: 0,
+              actions: [
+                if (controller.listSensors.isNotEmpty)
+                  Padding(
+                    padding: EdgeInsets.only(right: 15),
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                      child: GestureDetector(
+                        child: Icon(Icons.settings),
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => SettingsPage(
+                                      sensor: controller.sensorSelected)));
+                        },
+                      ),
                     ),
-                  ),
+                  )
+              ],
+            ),
+            body: Column(
+              children: [
+                Expanded(
+                  child: controller.listSensors.isEmpty
+                      ? widgetZeroSensors(context)
+                      : SensorList(controller: controller),
+                ),
+                AddRemoveSensor(
+                  controller: controller,
                 )
-            ],
-          ),
-          body: Column(
-            children: [
-              Expanded(
-                child: controller.listSensors.isEmpty
-                    ? widgetZeroSensors(context)
-                    : SensorList(controller: controller),
-              ),
-              AddRemoveSensor(
-                controller: controller,
-              )
-            ],
+              ],
+            ),
           ),
         );
       },
