@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:sensor_pf/app/core/models/sensor.dart';
 import 'package:sensor_pf/app/core/ui/widgets.dart';
 import 'package:sensor_pf/app/modules/home/home_controller.dart';
-import 'package:sensor_pf/app/modules/home/widgets/add_sensor/add_sensor_page.dart';
+import 'package:sensor_pf/app/modules/home/widgets/add_remove_sensor.dart';
+import 'package:sensor_pf/app/modules/home/widgets/sensor_list.dart';
 import 'package:sensor_pf/app/modules/login/login_page.dart';
 import 'package:sensor_pf/app/modules/settings/settings_page.dart';
 
-// ignore: must_be_immutable
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
@@ -17,14 +16,7 @@ class _HomePageState extends State<HomePage> with Widgets {
   PageController pageController;
 
   @override
-  void dispose() {
-    pageController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    pageController = PageController(initialPage: controller.indexPage);
     return StreamBuilder(
       stream: controller.getStream(),
       builder: (_, snapshot) {
@@ -34,7 +26,6 @@ class _HomePageState extends State<HomePage> with Widgets {
           return waitingConnection();
 
         controller.buildListSensor(snapshot: snapshot);
-        // controller.listSensors.clear();
 
         return Scaffold(
           appBar: AppBar(
@@ -77,319 +68,16 @@ class _HomePageState extends State<HomePage> with Widgets {
               Expanded(
                 child: controller.listSensors.isEmpty
                     ? widgetZeroSensors(context)
-                    : widgetSensor(context),
+                    : SensorList(controller: controller),
               ),
-              LayoutBuilder(
-                builder: (context, BoxConstraints constraints) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 25),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          width: constraints.maxWidth / 2,
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => AddSensorPage(),
-                                  ));
-                            },
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(Icons.add),
-                                SizedBox(width: 8),
-                                Text("Adicionar Sensor",
-                                    style:
-                                        Theme.of(context).textTheme.headline5),
-                              ],
-                            ),
-                          ),
-                        ),
-                        Container(
-                          width: constraints.maxWidth / 2,
-                          child: GestureDetector(
-                            onTap: () {
-                              if (controller.listSensors.isNotEmpty) {
-                                showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return AlertDialog(
-                                        actions: [
-                                          TextButton(
-                                            onPressed: () {
-                                              Navigator.of(context,
-                                                      rootNavigator: true)
-                                                  .pop(false);
-                                            },
-                                            child: Text(
-                                              "Cancelar",
-                                              style: TextStyle(
-                                                  color: Theme.of(context)
-                                                      .canvasColor),
-                                            ),
-                                          ),
-                                          TextButton(
-                                              onPressed: () async {
-                                                //retornar para primeira página do pageView
-                                                controller.indexPage = 0;
-                                                if (await controller
-                                                    .removeSensor()) {
-                                                  ScaffoldMessenger.of(context)
-                                                      .showSnackBar(snackBarSuccess(
-                                                          text:
-                                                              "Sensor removido.",
-                                                          context: context));
-                                                  setState(() {});
-                                                } else {
-                                                  ScaffoldMessenger.of(context)
-                                                      .showSnackBar(snackBarError(
-                                                          text:
-                                                              "Sensor não removido.",
-                                                          context: context));
-                                                }
-
-                                                Navigator.of(context,
-                                                        rootNavigator: true)
-                                                    .pop(true);
-                                              },
-                                              child: Text(
-                                                "Remover",
-                                                style: TextStyle(
-                                                    color: Colors.red
-                                                        .withOpacity(0.5)),
-                                              ))
-                                        ],
-                                        title: Text(
-                                          "Remover sensor",
-                                          style: TextStyle(color: Colors.black),
-                                        ),
-                                        content: RichText(
-                                            text: TextSpan(
-                                                style: TextStyle(
-                                                    color: Colors.black),
-                                                text:
-                                                    "Confirma remoção do sensor ",
-                                                children: [
-                                              TextSpan(
-                                                  text:
-                                                      "${controller.sensorSelected.value.name}",
-                                                  style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontWeight:
-                                                          FontWeight.bold)),
-                                              TextSpan(
-                                                text: "?",
-                                                style: TextStyle(
-                                                    color: Colors.black),
-                                              )
-                                            ])),
-                                      );
-                                    });
-                              }
-                            },
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(Icons.delete_forever,
-                                    color: controller.listSensors.isNotEmpty
-                                        ? null
-                                        : Colors.red),
-                                SizedBox(width: 8),
-                                Text("Remover Sensor",
-                                    style: controller.listSensors.isNotEmpty
-                                        ? Theme.of(context).textTheme.headline5
-                                        : TextStyle(
-                                            color: Colors.red,
-                                            fontWeight: FontWeight.w100,
-                                            fontSize: 20)),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                },
+              AddRemoveSensor(
+                controller: controller,
               )
             ],
           ),
         );
       },
     );
-  }
-
-  widgetSensor(context) {
-    return ValueListenableBuilder(
-        valueListenable: controller.sensorSelected,
-        builder: (_, Sensor sensor, child) {
-          return SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
-            child: Container(
-              padding: EdgeInsets.only(top: 20),
-              child: Column(
-                children: [
-                  Container(
-                    height: 30,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        buttonChangeSensorBack(),
-                        Expanded(
-                          child: Center(
-                            child: Tooltip(
-                              message: sensor.name,
-                              child: Text(
-                                "${sensor.name}",
-                                overflow: TextOverflow.ellipsis,
-                                style: Theme.of(context).textTheme.headline6,
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                          ),
-                        ),
-                        buttonChangeSensorForward(),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                      padding: EdgeInsets.symmetric(vertical: 30),
-                      child: Text(
-                        "Temperatura atual",
-                        style: Theme.of(context).textTheme.headline1,
-                      )),
-                  Container(
-                    height: 200,
-                    width: double.infinity,
-                    child: PageView.builder(
-                      physics: BouncingScrollPhysics(),
-                      controller: pageController,
-                      itemCount: controller.listSensors.length,
-                      itemBuilder: (context, index) {
-                        return Container(
-                          margin: EdgeInsets.all(3),
-                          child: Stack(
-                            alignment: Alignment.center,
-                            children: [
-                              SizedBox(
-                                height: 200,
-                                width: 200,
-                                child: TweenAnimationBuilder(
-                                  key: ValueKey<double>(
-                                      sensor.temperatures.real),
-                                  curve: Curves.bounceOut,
-                                  duration: const Duration(seconds: 3),
-                                  tween: Tween<double>(
-                                      begin: 0,
-                                      end:
-                                          controller.calculatePercentToAlert()),
-                                  builder: (_, value, child) {
-                                    return CircularProgressIndicator(
-                                      value: value,
-                                      strokeWidth: 5,
-                                    );
-                                  },
-                                ),
-                              ),
-                              AnimatedSwitcher(
-                                duration: const Duration(seconds: 1),
-                                transitionBuilder:
-                                    (child, Animation<double> animation) {
-                                  return ScaleTransition(
-                                      child: child, scale: animation);
-                                },
-                                child: Text(
-                                  "${sensor.temperatures.real.toStringAsFixed(2)}º",
-                                  style: Theme.of(context).textTheme.headline4,
-                                  key: ValueKey<double>(
-                                      sensor.temperatures.real),
-                                ),
-                              )
-                            ],
-                          ),
-                        );
-                      },
-                      onPageChanged: (int index) {
-                        controller.sensorSelected =
-                            controller.listSensors[index];
-                        controller.indexPage = index;
-                      },
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(vertical: 40),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        cardTemperatures(
-                            text: "Mínima",
-                            temperature: sensor.temperatures.minimum,
-                            context: context),
-                        cardTemperatures(
-                            text: "Média",
-                            temperature: sensor.temperatures.average,
-                            context: context),
-                        cardTemperatures(
-                            text: "Máxima",
-                            temperature: sensor.temperatures.maximum,
-                            context: context),
-                      ],
-                    ),
-                  ),
-                  ValueListenableBuilder(
-                    valueListenable: controller.timerRequestTemperature,
-                    builder: (_, double timer, child) {
-                      return GestureDetector(
-                        onTap: () async {
-                          if (timer == 0) {
-                            controller.requestTemperatureUpdate();
-                            controller.progressBar();
-                          }
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                              boxShadow: [
-                                BoxShadow(
-                                    color: Colors.white.withOpacity(0.2),
-                                    blurRadius: 5,
-                                    offset: Offset(0, 3.5))
-                              ],
-                              color: Theme.of(context).accentColor,
-                              borderRadius: BorderRadius.circular(40)),
-                          height: 60,
-                          width: 220,
-                          padding: EdgeInsets.symmetric(horizontal: 25),
-                          child: Stack(
-                            alignment: Alignment.center,
-                            children: [
-                              Text(
-                                "Atualizar",
-                                style: Theme.of(context).textTheme.button,
-                              ),
-                              Positioned(
-                                  left: 0,
-                                  right: 0,
-                                  bottom: 6,
-                                  child: LinearProgressIndicator(
-                                    valueColor: AlwaysStoppedAnimation<Color>(
-                                        Colors.black),
-                                    backgroundColor: Colors.transparent,
-                                    value: controller
-                                        .timerRequestTemperature.value,
-                                  ))
-                            ],
-                          ),
-                        ),
-                      );
-                    },
-                  )
-                ],
-              ),
-            ),
-          );
-        });
   }
 
   waitingConnection() {
@@ -416,66 +104,6 @@ class _HomePageState extends State<HomePage> with Widgets {
         "Nenhum sensor cadastrado.",
         style: Theme.of(context).textTheme.headline2,
         textAlign: TextAlign.center,
-      ),
-    );
-  }
-
-  buttonChangeSensorBack() {
-    return Container(
-      margin: EdgeInsets.only(left: 25),
-      width: 40,
-      height: 40,
-      child: controller.indexPage == 0
-          ? Container()
-          : GestureDetector(
-              child: Icon(Icons.arrow_back_ios),
-              onTap: () {
-                pageController.previousPage(
-                    curve: Curves.ease, duration: Duration(microseconds: 1));
-              },
-            ),
-    );
-  }
-
-  buttonChangeSensorForward() {
-    return Container(
-      margin: EdgeInsets.only(right: 25),
-      width: 40,
-      height: 40,
-      child: controller.indexPage == (controller.listSensors.length - 1)
-          ? Container()
-          : GestureDetector(
-              child: Icon(Icons.arrow_forward_ios),
-              onTap: () {
-                pageController.nextPage(
-                    curve: Curves.ease, duration: Duration(microseconds: 1));
-              },
-            ),
-    );
-  }
-
-  cardTemperatures(
-      {@required String text,
-      @required double temperature,
-      @required BuildContext context}) {
-    return Container(
-      child: Column(
-        children: [
-          Text(text, style: Theme.of(context).textTheme.headline6),
-          Row(
-            children: [
-              Text(
-                "${temperature.toStringAsFixed(2)}",
-                style: Theme.of(context).textTheme.headline2,
-              ),
-              Text("º",
-                  style: TextStyle(
-                      fontSize: 40,
-                      fontWeight: FontWeight.w300,
-                      color: Colors.white)),
-            ],
-          )
-        ],
       ),
     );
   }

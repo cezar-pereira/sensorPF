@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:sensor_pf/app/core/ui/widgets.dart';
 import 'package:sensor_pf/app/core/validators/validators.dart';
 import 'package:sensor_pf/app/modules/home/home_page.dart';
-import 'package:sensor_pf/app/modules/home/widgets/add_sensor/add_sensor_controller.dart';
+
+import 'add_sensor_controller.dart';
 
 class AddSensorPage extends StatelessWidget with Widgets {
   final AddSensorController controller = AddSensorController();
