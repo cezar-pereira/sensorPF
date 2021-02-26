@@ -19,13 +19,18 @@ class HomeController {
 
     if (snapshot.data.snapshot.value != null) {
       snapshot.data.snapshot.value.forEach((key, json) {
-        this._sensors.add(Sensor.fromJson(json: json, key: key));
+        if (json['name'] != null)
+          this._sensors.add(Sensor.fromJson(json: json, key: key));
+        else
+          this._sensorRepository.remove(sensor: Sensor(id: key));
       });
 
-      this._sensors.sort((Sensor sensorA, Sensor sensorB) =>
-          sensorA.createdAt.compareTo(sensorB.createdAt));
+      if (_sensors.isNotEmpty) {
+        this._sensors.sort((Sensor sensorA, Sensor sensorB) =>
+            sensorA.createdAt.compareTo(sensorB.createdAt));
 
-      this._sensorSelected.value = this._sensors[indexPage];
+        this._sensorSelected.value = this._sensors[indexPage];
+      }
     }
   }
 

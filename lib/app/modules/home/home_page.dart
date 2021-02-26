@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sensor_pf/app/core/ui/widgets.dart';
 import 'package:sensor_pf/app/modules/home/home_controller.dart';
 import 'package:sensor_pf/app/modules/home/widgets/add_remove_sensor.dart';
-import 'package:sensor_pf/app/modules/home/widgets/sensor_list.dart';
+import 'package:sensor_pf/app/modules/home/widgets/sensor_list/sensor_list.dart';
 import 'package:sensor_pf/app/modules/login/login_page.dart';
 import 'package:sensor_pf/app/modules/settings/settings_page.dart';
 
